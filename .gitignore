@@ -250,4 +250,4 @@ data/*.csv
 data/*.png
 data/*.gif
 tmp
-include/*.zip
+include
