@@ -1,8 +1,8 @@
 #   Directory : Project Root
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.8)
 
 project(
-    FLIGHT_CONTROLLER
+    FLIGHT_CONTROLLERS
     LANGUAGES CXX
     )
 set(CMAKE_CXX_COMPILER)

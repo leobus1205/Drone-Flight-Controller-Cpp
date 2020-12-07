@@ -250,4 +250,5 @@ data/*.csv
 data/*.png
 data/*.gif
 tmp
+cmake
 include

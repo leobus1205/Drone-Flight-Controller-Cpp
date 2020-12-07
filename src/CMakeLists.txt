@@ -28,7 +28,10 @@ add_library(MotorControl STATIC motor_control.cc)
 target_include_directories(
     MotorControl
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/include/pigpio
 )
+
+add_library(DescretePidController STATIC descrete_pid_controller.cc)
+
 # ライブラリファイル名の指定
 target_link_libraries(MotorControl pigpio)
