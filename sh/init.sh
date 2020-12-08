@@ -9,16 +9,15 @@ sudo apt upgrade -y build-essential
 sudo apt upgrade -y cmake
 sudo apt upgrade -y git git-core
 sudo apt upgrade -y zip unzip
-#wget https://project-downloads.drogon.net/wiringpi-latest.deb
-#sudo dpkg -i wiringpi-latest.deb
-cd include
+wget https://project-downloads.drogon.net/wiringpi-latest.deb
+sudo dpkg -i wiringpi-latest.deb
+cd ../include
 sudo wget https://github.com/joan2937/pigpio/archive/master.zip
 sudo unzip master.zip
-#cd pigpio-master
-#sudo make
-#sudo make install
-#cd ../../
-cd ../
+cd pigpio-master
+sudo make
+sudo make install
+cd ../../
 echo "Create dir cmake"
 sudo mkdir cmake
 echo "Get Download_Project.cmake"
