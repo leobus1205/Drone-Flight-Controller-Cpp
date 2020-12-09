@@ -249,6 +249,5 @@ dmypy.json
 data/*.csv
 data/*.png
 data/*.gif
-tmp
 cmake
-include
+tmp

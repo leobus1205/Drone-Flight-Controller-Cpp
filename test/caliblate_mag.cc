@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     writing_file_before
         << "RAW_MAG_X,"
         << "RAW_MAG_Y,"
-        << "RAW_MAG_Z,"
+        << "RAW_MAG_Z"
         << std::endl;
 
     for (int i = 0; i < std::stoi(argv[4]); i++)
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     writing_file_after
         << "RAW_MAG_X,"
         << "RAW_MAG_Y,"
-        << "RAW_MAG_Z,"
+        << "RAW_MAG_Z"
         << std::endl;
 
     for (int i = 0; i < std::stoi(argv[4]); i++)

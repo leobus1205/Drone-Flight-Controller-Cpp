@@ -1,6 +1,7 @@
 #include "../src/mpu9250.hpp"
 #include <iostream>
 #include <stdio.h>
+#include <fstream>
 
 int main()
 {

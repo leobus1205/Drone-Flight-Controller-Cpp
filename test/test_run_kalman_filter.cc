@@ -17,7 +17,7 @@ int main()
     std::cout << "Who Am I :\t0x" << std::hex << convert_data << "\ns" << std::endl;
 
     double raw_gyro_values[3] = {0.0}, raw_accel_values[3] = {0.0}, raw_mag_values[3] = {0.0};
-    double dt_sec = 0.0;
+    double dt_msec = 0.0;
     std::chrono::system_clock::time_point start, end;
 
     std::cout << "DegOffsets:\t\t"
@@ -42,7 +42,7 @@ int main()
             << " "
             << NineAxisSensor.raw_rad_angles_[2] * NineAxisSensor.RAD2DEG
             << std::endl;
-        Filter.Filtering(NineAxisSensor.raw_rad_angles_, NineAxisSensor.raw_gyro_values_, dt_sec);
+        Filter.Filtering(NineAxisSensor.raw_rad_angles_, NineAxisSensor.raw_gyro_values_, dt_msec);
         std::cout
             << "FilteredDegAngle:\t"
             << NineAxisSensor.raw_rad_angles_[0] * NineAxisSensor.RAD2DEG
@@ -53,7 +53,7 @@ int main()
             << "\n"
             << std::endl;
         end = std::chrono::system_clock::now();
-        dt_sec = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
+        dt_msec = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
     }
 
     return 0;

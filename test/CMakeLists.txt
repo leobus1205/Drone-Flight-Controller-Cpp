@@ -111,6 +111,16 @@ target_link_libraries(
     MotorControl
 )
 
+# Descrete PID Controller
+add_executable(
+    TestRunDiscretePidContoroller.out
+    ${PROJECT_SOURCE_DIR}/test/test_run_descrete_pid_controller.cc
+)
+target_link_libraries(
+    TestRunDiscretePidContoroller.out
+    DescretePidController
+)
+
 gtest_add_tests(TARGET TestReadConfigFile.out)
 gtest_add_tests(TARGET TestUseSensorClass.out)
 gtest_add_tests(TARGET Test9AxisSensor.out)
