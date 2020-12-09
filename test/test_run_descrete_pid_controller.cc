@@ -7,11 +7,7 @@
 
 int main()
 {
-    std::vector<double> K_c = std::vector<double>(3, 1.0);
-    std::vector<double> T_i_transform = std::vector<double>(3, 0.01);
-    std::vector<double> T_d_transform = std::vector<double>(3, 0.5 / 1000.0 / 1000.0);
-
-    PidController Controller(K_c, T_i_transform, T_d_transform);
+    PidController Controller;
 
     std::cout
         << Controller.K_c_[0] << ","

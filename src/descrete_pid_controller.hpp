@@ -1,10 +1,12 @@
 #ifndef FLIGHTCONTROLLER_SRC_DISCRETEPIDCONTROLLER_HPP_
 #define FLIGHTCONTROLLER_SRC_DISCRETEPIDCONTROLLER_HPP_
 
+#include "config_loader.hpp"
+
 #include <vector>
 #include <cmath>
 
-class PidController
+class PidController : public LoadConfigFileClass
 {
 
 public:
@@ -20,7 +22,7 @@ public:
     std::vector<double> e_ = std::vector<double>(3, initializer);
     std::vector<double> u_ = std::vector<double>(3, initializer);
 
-    PidController(std::vector<double> &, std::vector<double> &, std::vector<double> &);
+    PidController();
 
     void DescretePidController(std::vector<double>, std::vector<double>, double);
 };

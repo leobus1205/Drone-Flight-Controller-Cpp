@@ -32,6 +32,10 @@ target_include_directories(
 )
 
 add_library(DescretePidController STATIC descrete_pid_controller.cc)
+target_link_libraries(
+    DescretePidController
+    ReadConfigFile
+)
 
 # ライブラリファイル名の指定
 target_link_libraries(MotorControl pigpio)

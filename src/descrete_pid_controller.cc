@@ -2,13 +2,23 @@
 
 #include <iostream>
 
-PidController::PidController(std::vector<double> &K_c, std::vector<double> &T_i_transform, std::vector<double> &T_d_transform)
+PidController::PidController()
 {
+    std::string file_name_descrete_pid = "../conf/descrete_pid_parameters.conf";
+
+    std::list<double> descrete_pid_parameters;
+
+    if (!this->ReadConfigFileDouble(file_name_descrete_pid, descrete_pid_parameters))
+    {
+        std::cout << "Failed to read" << file_name_descrete_pid << std::endl;
+    }
+
+    auto itr_descrete_pid_parameters = descrete_pid_parameters.begin();
     for (int i = 0; i < 3; i++)
     {
-        K_c_[i] = K_c[i];
-        T_i_transform_[i] = T_i_transform[i];
-        T_d_transform_[i] = T_d_transform[i];
+        K_c_[i] = *itr_descrete_pid_parameters;
+        T_i_transform_[i] = *(++itr_descrete_pid_parameters);
+        T_d_transform_[i] = *(++itr_descrete_pid_parameters);
     }
 }
 
