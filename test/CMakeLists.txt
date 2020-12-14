@@ -121,6 +121,17 @@ target_link_libraries(
     DescretePidController
 )
 
+# Get Inertial height
+add_executable(
+    TestRunGetInertialHeight.out
+    ${PROJECT_SOURCE_DIR}/test/test_run_get_inertial_height.cc
+)
+target_link_libraries(
+    TestRunGetInertialHeight.out
+    GetInertialHeight
+    9AxisSensor
+)
+
 gtest_add_tests(TARGET TestReadConfigFile.out)
 gtest_add_tests(TARGET TestUseSensorClass.out)
 gtest_add_tests(TARGET Test9AxisSensor.out)

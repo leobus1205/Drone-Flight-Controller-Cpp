@@ -37,5 +37,11 @@ target_link_libraries(
     ReadConfigFile
 )
 
+add_library(GetInertialHeight STATIC get_inertial_height.cc)
+target_link_libraries(
+    GetInertialHeight
+    ReadConfigFile
+)
+
 # ライブラリファイル名の指定
 target_link_libraries(MotorControl pigpio)
