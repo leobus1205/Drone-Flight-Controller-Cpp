@@ -21,6 +21,10 @@ public:
     int translate_matrix_size_ = 4;
     double translate_force2angular_ = 0.0;
     
+    int max_pulse_width_ = 0;
+    int min_pulse_width_ = 0;
+    int frequency_ = 0;
+    int pwm_range_ = 0;
 
     ConvertOutput2Duty();
 
