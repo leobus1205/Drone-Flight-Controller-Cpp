@@ -90,13 +90,13 @@ void Motors::Arming()
     std::cout << "Arming Motros" << std::endl;
     motor_arm_duty_ = (int)((motor_arm_duty_ * (max_pulse_width_ - min_pulse_width_)) / (max_pulse_width_ - min_pulse_width_));
     for (int i = 0; i < motor_gpios_.size(); i++)
-        gpioServo(motor_gpios_[i], motor_arm_duty_ * pwm_range_);
+        gpioServo(motor_gpios_[i], motor_arm_duty_ * max_pulse_width_);
     std::this_thread::sleep_for(std::chrono::microseconds(sleep_time_));
 }
 void Motors::ChangePwmDuty()
 {
     for (int i = 0; i < motor_gpios_.size(); i++)
-        gpioServo(motor_gpios_[i], motor_control_duties_[i] * pwm_range_);
+        gpioServo(motor_gpios_[i], motor_control_duties_[i] * max_pulse_width_);
 }
 void Motors::DisArming()
 {

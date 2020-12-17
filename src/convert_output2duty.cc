@@ -42,7 +42,7 @@ ConvertOutput2Duty::ConvertOutput2Duty()
 
     ++itr_param_esc;
     ++itr_param_esc;
-    max_thrust_ = *(++itr_param_esc);
+    max_thrust_ = *(++itr_param_esc) * max_pulse_width_ / pwm_range_;
 
     // for(int i = 0; i < translate_matrix_1_.size();i++){
     //     translate_matrix_1_[i] = *itr_param;
