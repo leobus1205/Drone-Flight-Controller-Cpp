@@ -30,6 +30,10 @@ target_include_directories(
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include/pigpio
 )
+target_link_libraries(
+    MotorControl
+    ReadConfigFile
+)
 
 add_library(DescretePidController STATIC descrete_pid_controller.cc)
 target_link_libraries(

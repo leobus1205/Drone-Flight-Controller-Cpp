@@ -1,6 +1,8 @@
 #ifndef FLIGHTCONTROLLER_SRC_MOTORCONTROL_HPP_
 #define FLIGHTCONTROLLER_SRC_MOTORCONTROL_HPP_
 
+#include "config_loader.hpp"
+
 #include <pigpio.h>
 #include <pigpiod_if2.h>
 #include <vector>
@@ -9,7 +11,7 @@
 #include <thread>
 #include <string>
 
-class Motors
+class Motors : private LoadConfigFileClass
 {
 public:
     int pi_;

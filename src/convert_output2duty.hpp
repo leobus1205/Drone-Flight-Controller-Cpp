@@ -19,6 +19,8 @@ public:
     // std::vector<double> translate_matrix_4_ = std::vector<double>(4, 0.0);
     std::vector<std::vector<double>> translate_matrix_;
     int translate_matrix_size_ = 4;
+    double translate_force2angular_ = 0.0;
+    
 
     ConvertOutput2Duty();
 
@@ -26,8 +28,10 @@ public:
 
     void outputs2thrusts_converter(std::vector<double> &, std::vector<double> &);
 
-    void thrusts2duty_converter(std::vector<double> &, std::vector<double> &);
+    void thrusts2angularvelocities_converter(std::vector<double> &, std::vector<double> &);
 
+    void angularvelocities2duties_converter(std::vector<double> &, std::vector<double> &);
+    
 };
 
 #endif // FLIGHTCONTROLLER_SRC_CONVERTOUTPUT2DUTY_HPP_

@@ -2,6 +2,24 @@
 
 Motors::Motors(bool flag)
 {
+    std::string file_name = "../conf/esc_parameters.conf";
+
+    std::list<double> parameters;
+
+    if (!this->ReadConfigFileDouble(file_name, parameters))
+    {
+        std::cout << "Failed to read" << file_name << std::endl;
+    }
+
+    auto itr_param = parameters.begin();
+    max_pulse_width_ = *itr_param;
+    min_pulse_width_ = *(++itr_param);
+    frequency_ = *(++itr_param);
+    pwm_range_ = *(++itr_param);
+    motor_arm_duty_ =*(++itr_param);
+    sleep_time_ = *(++itr_param);
+
+
     pi_ = gpioInitialise();
 
     this->SetUpPwm();
