@@ -14,8 +14,10 @@ ConvertOutput2Duty::ConvertOutput2Duty()
     translate_matrix_.resize(translate_matrix_size_, std::vector<double>(translate_matrix_size_));
     auto itr_param_vihecle = parameters_vihecle.begin();
 
-    for(int i = 0; i < translate_matrix_size_;i++){
-        for(auto itr = translate_matrix_.at(i).begin(); itr != translate_matrix_.at(i).end(); ++itr){
+    for (int i = 0; i < translate_matrix_size_; i++)
+    {
+        for (auto itr = translate_matrix_.at(i).begin(); itr != translate_matrix_.at(i).end(); ++itr)
+        {
             *itr = *itr_param_vihecle;
             ++itr_param_vihecle;
         }
@@ -37,6 +39,10 @@ ConvertOutput2Duty::ConvertOutput2Duty()
     min_pulse_width_ = *(++itr_param_esc);
     frequency_ = *(++itr_param_esc);
     pwm_range_ = *(++itr_param_esc);
+
+    ++itr_param_esc;
+    ++itr_param_esc;
+    max_thrust_ = *(++itr_param_esc);
 
     // for(int i = 0; i < translate_matrix_1_.size();i++){
     //     translate_matrix_1_[i] = *itr_param;
@@ -70,32 +76,43 @@ double ConvertOutput2Duty::vector_culculator(std::vector<double> &horizontal_vec
 
 void ConvertOutput2Duty::outputs2thrusts_converter(std::vector<double> &outputs, std::vector<double> &thrusts)
 {
-    for(int i = 0; i < translate_matrix_size_; i++)
+    for (int i = 0; i < translate_matrix_size_; i++)
     {
         thrusts[i] = vector_culculator(translate_matrix_.at(i), outputs);
     }
 }
 
+// void ConvertOutput2Duty::thrusts2angularvelocities_converter(std::vector<double> &thrusts, std::vector<double> &angular_velocities)
+// {
+//     double angular_square = 0.0;
 
-void ConvertOutput2Duty::thrusts2angularvelocities_converter(std::vector<double> &thrusts, std::vector<double> &angular_velocities)
+//     for(int i = 0; i < translate_matrix_size_; i++)
+//     {
+//         angular_square = translate_force2angular_ * vector_culculator(translate_matrix_.at(i), thrusts);
+//         angular_velocities[i] = sqrt(angular_square);
+//     }
+// }
+
+// void ConvertOutput2Duty::angularvelocities2duties_converter(std::vector<double> &angular_velocities, std::vector<double> &duties)
+// {
+//     for (int i = 0; i < translate_matrix_size_; i++) {
+//         duties = angular_velocities;
+//     }
+
+//     for (int i = 0; i < translate_matrix_size_; i++) {
+//         if (duties[i] > 100) {
+//             duties[i] = 100;
+//         }
+//     }
+// }
+
+void ConvertOutput2Duty::thrusts2duties_converter(std::vector<double> &thrusts, std::vector<double> &duties)
 {
-    double angular_square = 0.0;
-
-    for(int i = 0; i < translate_matrix_size_; i++)
+    for (int i = 0; i < translate_matrix_size_; i++)
     {
-        angular_square = translate_force2angular_ * vector_culculator(translate_matrix_.at(i), thrusts);
-        angular_velocities[i] = sqrt(angular_square);
-    }
-}
-
-void ConvertOutput2Duty::angularvelocities2duties_converter(std::vector<double> &angular_velocities, std::vector<double> &duties)
-{
-    for (int i = 0; i < translate_matrix_size_; i++) {
-        duties = angular_velocities;
-    }
-
-    for (int i = 0; i < translate_matrix_size_; i++) {
-        if (duties[i] > 100) {
+        duties[i] = thrusts[i] / max_thrust_;
+        if (duties[i] > 100)
+        {
             duties[i] = 100;
         }
     }
