@@ -47,5 +47,11 @@ target_link_libraries(
     ReadConfigFile
 )
 
+add_library(ConvertOutput2Duty STATIC convert_output2duty.cc)
+target_link_libraries(
+    ConvertOutput2Duty
+    ReadConfigFile
+)
+
 # ライブラリファイル名の指定
 target_link_libraries(MotorControl pigpio)
