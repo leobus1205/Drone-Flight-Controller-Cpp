@@ -321,6 +321,8 @@ public:
     std::vector<double> angles_rad_offsets_ = std::vector<double>(3, 0.0);
     std::vector<double> angles_deg_offsets_ = std::vector<double>(3, 0.0);
 
+    std::vector<double> sensor_alignments_ = std::vector<double>(3, 0.0);
+
     //  Constructor
     //  Read Config File and Open MPU9250 on SPI
     MPU9250();

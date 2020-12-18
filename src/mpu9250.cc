@@ -42,6 +42,11 @@ MPU9250::MPU9250()
     GYRO_Y_INITIAL_OFFSET = *(++itr_mpu9250);
     GYRO_Z_INITIAL_OFFSET = *(++itr_mpu9250);
 
+    for (auto itr_alignmet = sensor_alignments_.begin(); itr_alignmet != sensor_alignments_.end(); ++itr_alignmet)
+    {
+        *itr_alignmet = *(++itr_mpu9250);
+    }
+
     std::cout << "Success to read mpu9250 config files\n"
               << std::endl;
 
@@ -443,11 +448,10 @@ void MPU9250::GetVelocitoesandAccelerations()
     for (int i = 0; i < 3; i++)
     {
         raw_gyro_values_[i] = gyro_scale_ * this->Ushort2Signed((data[2 * i + 8] << 8) | data[2 * i + 9]);
-    }
+        raw_gyro_values_[i] *= sensor_alignments_[i];
 
-    for (int i = 0; i < 3; i++)
-    {
         raw_accel_values_[i] = accel_scale_ * this->Ushort2Signed((data[2 * i + 0] << 8) | data[2 * i + 1]);
+        raw_accel_values_[i] *= sensor_alignments_[i];
     }
 }
 
@@ -467,6 +471,11 @@ void MPU9250::GetGeomagnetisms()
     raw_mag_values_[0] = raw_mag_values_h_[1] - mag_offsets_[0];
     raw_mag_values_[1] = temp - mag_offsets_[1];
     raw_mag_values_[2] = -raw_mag_values_h_[2] - mag_offsets_[2];
+
+    for (int i = 0; i < 3; i++)
+    {
+        raw_mag_values_[i] *= sensor_alignments_[i];
+    }
 }
 
 void MPU9250::GetEulerRadAngles()
