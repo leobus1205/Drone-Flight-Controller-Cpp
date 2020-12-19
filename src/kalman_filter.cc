@@ -47,9 +47,9 @@ KalmanFilter::KalmanFilter()
               << std::endl;
 }
 
-void KalmanFilter::Filtering(std::vector<double> &angles, std::vector<double> gyros, double dt_msec)
+void KalmanFilter::Filtering(std::vector<double> &angles, std::vector<double> gyros, double dt_usec)
 {
-    double dt_sec = dt_msec / 1000.0;
+    double dt_sec = dt_usec / 1000.0 / 1000.0;
     std::vector<double> matrix_pre_state_estimate = std::vector<double>(sqare_matrix_size_);
     std::vector<double> matrix_gain = std::vector<double>(sqare_matrix_size_);
 
