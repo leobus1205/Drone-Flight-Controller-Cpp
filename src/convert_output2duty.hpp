@@ -21,6 +21,9 @@ public:
     int translate_matrix_size_ = 4;
     double translate_force2angular_ = 0.0;
 
+    std::vector<double> thrusts_ = std::vector<double>(translate_matrix_size_, 0.0);
+    std::vector<double> duties_ = std::vector<double>(translate_matrix_size_, 0.0);
+
     int max_pulse_width_ = 0;
     int min_pulse_width_ = 0;
     int frequency_ = 0;
@@ -31,13 +34,13 @@ public:
 
     double vector_culculator(std::vector<double> &, std::vector<double> &);
 
-    void outputs2thrusts_converter(std::vector<double> &, std::vector<double> &);
+    void outputs2thrusts_converter(std::vector<double> &);
 
     // void thrusts2angularvelocities_converter(std::vector<double> &, std::vector<double> &);
 
     // void angularvelocities2duties_converter(std::vector<double> &, std::vector<double> &);
 
-    void thrusts2duties_converter(std::vector<double> &, std::vector<double> &);
+    void thrusts2duties_converter();
 };
 
 #endif // FLIGHTCONTROLLER_SRC_CONVERTOUTPUT2DUTY_HPP_

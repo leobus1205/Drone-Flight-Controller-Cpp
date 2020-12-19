@@ -74,11 +74,11 @@ double ConvertOutput2Duty::vector_culculator(std::vector<double> &horizontal_vec
     return result;
 }
 
-void ConvertOutput2Duty::outputs2thrusts_converter(std::vector<double> &outputs, std::vector<double> &thrusts)
+void ConvertOutput2Duty::outputs2thrusts_converter(std::vector<double> &outputs)
 {
     for (int i = 0; i < translate_matrix_size_; i++)
     {
-        thrusts[i] = vector_culculator(translate_matrix_.at(i), outputs);
+        thrusts_[i] = vector_culculator(translate_matrix_.at(i), outputs);
     }
 }
 
@@ -106,14 +106,14 @@ void ConvertOutput2Duty::outputs2thrusts_converter(std::vector<double> &outputs,
 //     }
 // }
 
-void ConvertOutput2Duty::thrusts2duties_converter(std::vector<double> &thrusts, std::vector<double> &duties)
+void ConvertOutput2Duty::thrusts2duties_converter()
 {
     for (int i = 0; i < translate_matrix_size_; i++)
     {
-        duties[i] = thrusts[i] / max_thrust_;
-        if (duties[i] > 100)
+        duties[i] = thrusts_[i] / max_thrust_;
+        if (duties_[i] > 100)
         {
-            duties[i] = 100;
+            duties_[i] = 100;
         }
     }
 }
