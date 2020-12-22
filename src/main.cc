@@ -68,8 +68,8 @@ int main(char *argv[])
     std::cout << "Calibrate Magnimeter." << std::endl;
     AtitudeSensor.CalibrateMagnimeter(0.001, 1000, 1000);
 
-    // emergency thread open
     bool flag_loopbreak = false;
+    control_key_input(flag_loopbreak, Motors, target_anfles)
 
     Motors Motors(std::stoi(argv[1]));
     Motors.CalibrateEsc();
