@@ -7,14 +7,14 @@
 #include <iostream>
 #include <string>
 
-int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> &target_anfles)
+int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> &target_angles)
 {
     char command_input;
     double value_input;
 
     while (1)
     {
-        std::cin << command_input << value_input << std::endl;
+        std::cin >> command_input >> value_input;
         if (std::cin.fail())
             continue;
 
@@ -32,15 +32,15 @@ int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> 
             break;
 
         case 'x':
-            target_anfles[0] = value_input;
+            target_angles[0] = value_input;
             break;
 
         case 'y':
-            target_anfles[1] = value_input;
+            target_angles[1] = value_input;
             break;
 
         case 'z':
-            target_anfles[2] = value_input;
+            target_angles[2] = value_input;
             break;
         }
     }
@@ -68,10 +68,11 @@ int main(char *argv[])
     std::cout << "Calibrate Magnimeter." << std::endl;
     AtitudeSensor.CalibrateMagnimeter(0.001, 1000, 1000);
 
-    bool flag_loopbreak = false;
-    control_key_input(flag_loopbreak, Motors, target_anfles)
-
     Motors Motors(std::stoi(argv[1]));
+
+    bool flag_loopbreak = false;
+    control_key_input(flag_loopbreak, Motors, target_angles);
+
     Motors.CalibrateEsc();
     Motors.Arming();
 
@@ -99,8 +100,11 @@ int main(char *argv[])
         Converter.thrusts2duties_converter();
 
         auto itr_motors = Motors.motor_control_duties_.begin();
-        for (auto itr_converter = Converter.duties_.begin(); itr_converter != Converter.duties_.end(); ++itr_converter && ++itr_motors)
+        for (auto itr_converter = Converter.duties_.begin(); itr_converter != Converter.duties_.end(); ++itr_converter)
+        {
             *itr_motors = *itr_converter;
+            ++itr_motors;
+        }
         Motors.ChangePwmDuty();
 
         end = std::chrono::system_clock::now();
