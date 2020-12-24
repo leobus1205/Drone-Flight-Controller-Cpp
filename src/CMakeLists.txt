@@ -53,5 +53,21 @@ target_link_libraries(
     ReadConfigFile
 )
 
+add_executable(
+    FlightController.out
+    ${PROJECT_SOURCE_DIR}/src/main.cc
+)
+target_link_libraries(
+    FlightController.out
+    ReadConfigFile
+    UseSensorClass
+    9AxisSensor
+    KalmanFilter
+    HightSensor
+    MotorControl
+    DescretePidController
+    ConvertOutput2Duty
+)
+
 # ライブラリファイル名の指定
 target_link_libraries(MotorControl pigpio)

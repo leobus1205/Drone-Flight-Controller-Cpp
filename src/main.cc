@@ -14,7 +14,7 @@ int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> 
 
     while (1)
     {
-        std::cin >> command_input >> value_input;
+        std::cin >> command_input;
         if (std::cin.fail())
             continue;
 
@@ -24,22 +24,25 @@ int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> 
             std::cout << "Emergency Motors Disarming." << std::endl;
             Motors.DisArming();
             flag_loopbreak = true;
-            break;
+            return -1;
 
         case 'q':
             std::cout << "Quite." << std::endl;
             flag_loopbreak = true;
-            break;
+            return -1;
 
         case 'x':
+            std::cin >> value_input;
             target_angles[0] = value_input;
             break;
 
         case 'y':
+            std::cin >> value_input;
             target_angles[1] = value_input;
             break;
 
         case 'z':
+            std::cin >> value_input;
             target_angles[2] = value_input;
             break;
         }
@@ -63,17 +66,18 @@ int main(char *argv[])
 
     std::vector<double> target_angles = std::vector<double>(3, 0.0);
     for (int i = 0; i < 3; i++)
-        target_angles[i] = std::stod(argv[i + 1]);
+        target_angles[i] = 0.0;
+    //target_angles[i] = std::stod(argv[i + 1]);
 
     std::cout << "Calibrate Magnimeter." << std::endl;
     AtitudeSensor.CalibrateMagnimeter(0.001, 1000, 1000);
 
-    Motors Motors(std::stoi(argv[1]));
+    //Motors Motors(std::stoi(argv[1]));
+    Motors Motors(true);
 
     bool flag_loopbreak = false;
     control_key_input(flag_loopbreak, Motors, target_angles);
 
-    Motors.CalibrateEsc();
     Motors.Arming();
 
     std::chrono::system_clock::time_point start, end;
@@ -94,7 +98,7 @@ int main(char *argv[])
 
         for (int i = 0; i < 3; i++)
             AtitudeSensor.raw_gyro_values_[i] = AtitudeSensor.raw_gyro_values_[i] - Fillter.matrixes_state_estimate_.at(i).at(1);
-        //InnerController.DescretePidController(OuterController.u_, , dt_usec);
+        InnerController.DescretePidController(OuterController.u_, AtitudeSensor.raw_gyro_values_, dt_usec);
 
         Converter.outputs2thrusts_converter(InnerController.u_);
         Converter.thrusts2duties_converter();

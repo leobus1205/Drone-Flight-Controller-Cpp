@@ -110,7 +110,7 @@ void ConvertOutput2Duty::thrusts2duties_converter()
 {
     for (int i = 0; i < translate_matrix_size_; i++)
     {
-        duties[i] = thrusts_[i] / max_thrust_;
+        duties_[i] = thrusts_[i] / max_thrust_;
         if (duties_[i] > 100)
         {
             duties_[i] = 100;

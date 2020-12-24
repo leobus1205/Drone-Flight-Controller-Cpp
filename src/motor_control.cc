@@ -18,6 +18,7 @@ Motors::Motors(bool flag)
     pwm_range_ = *(++itr_param);
     motor_arm_duty_ = *(++itr_param);
     sleep_time_ = *(++itr_param);
+    ++itr_param;
     motors_num_ = *(++itr_param);
 
     for (int i = 0; i < motors_num_; i++)

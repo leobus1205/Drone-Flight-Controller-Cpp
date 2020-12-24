@@ -8,8 +8,6 @@ int main()
     ConvertOutput2Duty Converter;
     std::vector<double> test_vector = {1.0, 2.0, 3.0, 4.0};
     std::vector<double> test_outputs = std::vector<double>(3, 1.0);
-    std::vector<double> test_thrusts = std::vector<double>(4, 0.0);
-    std::vector<double> test_duties = std::vector<double>(4, 0.0);
 
     std::cout
         << "Show Parameters.\n"
@@ -32,22 +30,22 @@ int main()
         << Converter.vector_culculator(test_vector, test_vector)
         << std::endl;
 
-    Converter.outputs2thrusts_converter(test_outputs, test_thrusts);
+    Converter.outputs2thrusts_converter(test_outputs);
     std::cout
         << "Outputs to thrusts convertion test. Answer = {}\n"
-        << test_thrusts[0] << " "
-        << test_thrusts[1] << " "
-        << test_thrusts[2] << " "
-        << test_thrusts[3]
+        << Converter.thrusts_[0] << " "
+        << Converter.thrusts_[1] << " "
+        << Converter.thrusts_[2] << " "
+        << Converter.thrusts_[3]
         << std::endl;
 
-    Converter.thrusts2duties_converter(test_thrusts, test_duties);
+    Converter.thrusts2duties_converter();
     std::cout
         << "Thrusts to duties convertion test. Answer = {}\n"
-        << test_duties[0] << " "
-        << test_duties[1] << " "
-        << test_duties[2] << " "
-        << test_duties[3]
+        << Converter.duties_[0] << " "
+        << Converter.duties_[1] << " "
+        << Converter.duties_[2] << " "
+        << Converter.duties_[3]
         << std::endl;
 
     return 0;
