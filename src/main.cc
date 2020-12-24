@@ -69,8 +69,12 @@ int main(char *argv[])
         target_angles[i] = 0.0;
     //target_angles[i] = std::stod(argv[i + 1]);
 
-    std::cout << "Calibrate Magnimeter." << std::endl;
-    AtitudeSensor.CalibrateMagnimeter(0.001, 1000, 1000);
+    bool flag_calibratemag = 1;
+    if (flag_calibratemag != true)
+    {
+        std::cout << "Calibrate Magnimeter." << std::endl;
+        AtitudeSensor.CalibrateMagnimeter(0.001, 1000, 1000);
+    }
 
     //Motors Motors(std::stoi(argv[1]));
     Motors Motors(true);
