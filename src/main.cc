@@ -1,3 +1,4 @@
+#include "blackbox_logger.hpp"
 #include "convert_output2duty.hpp"
 #include "descrete_pid_controller.hpp"
 #include "kalman_filter.hpp"
@@ -6,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include <thread>
 
 int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> &target_angles)
 {
@@ -51,12 +53,7 @@ int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> 
     return 0;
 }
 
-void logger(ConvertOutput2Duty &Converter, PidController &OuterController, PidController &InnerController, MPU9250 &AtitudeSensor, Motors &Motors)
-{
-    //////////////////////
-}
-
-//  argv = {motor_status, target_x, target_y, target_z}
+//  argv = {esc_calibration flag, flag_calibratemag, target_y, target_z}
 int main(char *argv[])
 {
     ConvertOutput2Duty Converter;

@@ -53,6 +53,17 @@ target_link_libraries(
     ReadConfigFile
 )
 
+add_library(BlackboxLogger STATIC blackbox_logger.cc)
+target_link_libraries(
+    BlackboxLogger
+    9AxisSensor
+    KalmanFilter
+    HightSensor
+    MotorControl
+    DescretePidController
+    ConvertOutput2Duty
+)
+
 add_executable(
     FlightController.out
     ${PROJECT_SOURCE_DIR}/src/main.cc
@@ -67,6 +78,7 @@ target_link_libraries(
     MotorControl
     DescretePidController
     ConvertOutput2Duty
+    BlackboxLogger
 )
 
 # ライブラリファイル名の指定
