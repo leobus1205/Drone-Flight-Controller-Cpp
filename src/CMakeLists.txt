@@ -81,7 +81,7 @@ target_link_libraries(
     BlackboxLogger
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++17 -pthread")
 
 # ライブラリファイル名の指定
 target_link_libraries(MotorControl pigpio)

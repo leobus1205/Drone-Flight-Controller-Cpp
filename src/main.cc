@@ -54,7 +54,7 @@ int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> 
 }
 
 //  argv = {esc_calibration flag, flag_calibratemag, target_y, target_z}
-int main(char *argv[])
+int main(int argc, char *argv[])
 {
     ConvertOutput2Duty Converter;
     PidController OuterController, InnerController;
