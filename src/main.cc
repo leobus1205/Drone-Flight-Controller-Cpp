@@ -89,38 +89,38 @@ int main(int argc, char *argv[])
     // Control proccess
     while (1)
     {
-        // start = std::chrono::system_clock::now();
+        start = std::chrono::system_clock::now();
 
         if(flag_loopbreak == true)
             break;
 
-        // AttitudeSensor.GetVelocitoesandAccelerations();
-        // AttitudeSensor.GetEulerRadAngles();
-        // Fillter.Filtering(AttitudeSensor.angles_rad_offsets_, AttitudeSensor.raw_gyro_values_, dt_usec);
+        AttitudeSensor.GetVelocitoesandAccelerations();
+        AttitudeSensor.GetEulerRadAngles();
+        Fillter.Filtering(AttitudeSensor.angles_rad_offsets_, AttitudeSensor.raw_gyro_values_, dt_usec);
 
-        // // set target
+        // set target
 
-        // OuterController.DescretePidController(target_angles, AttitudeSensor.angles_rad_offsets_, dt_usec);
+        OuterController.DescretePidController(target_angles, AttitudeSensor.angles_rad_offsets_, dt_usec);
 
-        // for (int i = 0; i < 3; i++)
-        //     AttitudeSensor.raw_gyro_values_[i] = AttitudeSensor.raw_gyro_values_[i] - Fillter.matrixes_state_estimate_.at(i).at(1);
-        // InnerController.DescretePidController(OuterController.u_, AttitudeSensor.raw_gyro_values_, dt_usec);
+        for (int i = 0; i < 3; i++)
+            AttitudeSensor.raw_gyro_values_[i] = AttitudeSensor.raw_gyro_values_[i] - Fillter.matrixes_state_estimate_.at(i).at(1);
+        InnerController.DescretePidController(OuterController.u_, AttitudeSensor.raw_gyro_values_, dt_usec);
 
-        // Converter.outputs2thrusts_converter(InnerController.u_);
-        // Converter.thrusts2duties_converter();
+        Converter.outputs2thrusts_converter(InnerController.u_);
+        Converter.thrusts2duties_converter();
 
-        // auto itr_motors = Motors.motor_control_duties_.begin();
-        // for (auto itr_converter = Converter.duties_.begin(); itr_converter != Converter.duties_.end(); ++itr_converter)
-        // {
-        //     *itr_motors = *itr_converter;
-        //     ++itr_motors;
-        // }
-        // Motors.ChangePwmDuty();
+        auto itr_motors = Motors.motor_control_duties_.begin();
+        for (auto itr_converter = Converter.duties_.begin(); itr_converter != Converter.duties_.end(); ++itr_converter)
+        {
+            *itr_motors = *itr_converter;
+            ++itr_motors;
+        }
+        Motors.ChangePwmDuty();
 
-        // Logger.Logging();
+        Logger.Logging();
 
-        // end = std::chrono::system_clock::now();
-        // dt_usec = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
+        end = std::chrono::system_clock::now();
+        dt_usec = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
     }
 
     Motors.DisArming();
