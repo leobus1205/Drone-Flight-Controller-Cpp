@@ -115,6 +115,17 @@ int main(int argc, char *argv[])
             *itr_motors = *itr_converter;
             ++itr_motors;
         }
+
+        std::cout << "Duties: ";
+        for (auto itr_converter = Converter.duties_.begin(); itr_converter != Converter.duties_.end(); ++itr_converter)
+        {
+            std::cout << " " << std::dec <<  *itr_converter;
+        }
+        // for (auto itr_motors = Motors.motor_control_duties_.begin(); itr_motors != Motors.motor_control_duties_.end(); ++itr_motors)
+        // {
+        //     std::cout << " " << std::dec <<  *itr_motors;
+        // }
+        std::cout << std::endl;
         Motors.ChangePwmDuty();
 
         Logger.Logging();

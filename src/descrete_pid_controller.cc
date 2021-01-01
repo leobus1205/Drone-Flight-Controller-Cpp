@@ -33,7 +33,7 @@ void PidController::DescretePidController(std::vector<double> target, std::vecto
     double I = 0.0;
     double D = 0.0;
 
-    std::cout << T_s_sec << std::endl;
+    //std::cout << T_s_sec << std::endl;
 
     for (int i = 0; i < 3; i++)
     {
