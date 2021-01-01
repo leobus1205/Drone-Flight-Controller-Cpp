@@ -26,7 +26,12 @@ Motors::Motors(bool flag)
         motor_gpios_[i] = *(++itr_param);
     }
 
-    pi_ = gpioInitialise();
+    //pi_ = gpioInitialise();
+    if (gpioInitialise() < 0)
+    {
+        std::cout << "Failed to initialize pigpio." << std::endl;
+        exit(1);
+    }
 
     this->SetUpPwm();
 
