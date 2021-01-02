@@ -7,6 +7,8 @@
 #include <string>
 #include <list>
 
+//  JSONとかの方が扱いやすいと思うので、いずれ変更する。ss
+
 class LoadConfigFileClass
 {
 private:
