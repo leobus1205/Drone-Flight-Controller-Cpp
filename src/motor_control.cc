@@ -105,7 +105,7 @@ void Motors::Arming()
         gpioServo(motor_gpios_[i], motor_arm_duty_ * max_pulse_width_);
     std::this_thread::sleep_for(std::chrono::microseconds(sleep_time_));
 }
-void Motors::ChangePwmDuty(std::vector<int> &motor_control_duties)
+void Motors::ChangePwmDuty(const std::vector<int> &motor_control_duties)
 {
     for (int i = 0; i < motor_gpios_.size(); i++)
         gpioServo(motor_gpios_[i], motor_control_duties[i] * max_pulse_width_);

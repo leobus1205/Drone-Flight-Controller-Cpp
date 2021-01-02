@@ -29,7 +29,7 @@ public:
     void CalibrateEsc();
     void WakeUpEsc();
     void Arming();
-    void ChangePwmDuty(std::vector<int> &);
+    void ChangePwmDuty(const std::vector<int> &);
     void DisArming();
 };
 
