@@ -42,7 +42,8 @@ ConvertOutput2Duty::ConvertOutput2Duty()
 
     ++itr_param_esc;
     ++itr_param_esc;
-    max_thrust_ = *(++itr_param_esc) * max_pulse_width_ / pwm_range_;
+    max_thrust_ = *(++itr_param_esc) * (max_pulse_width_ / pwm_range_);
+    motor_num_ = *(++itr_param_esc);
 }
 
 double ConvertOutput2Duty::vector_culculator(std::vector<double> &horizontal_vector, std::vector<double> &vertical_vector)
@@ -62,17 +63,19 @@ void ConvertOutput2Duty::outputs2thrusts_converter(std::vector<double> &outputs)
     for (int i = 0; i < translate_matrix_size_; i++)
     {
         thrusts_[i] = vector_culculator(translate_matrix_.at(i), outputs);
+        //std::cout << thrusts_[i] << " ";
     }
+    //std::cout << std::endl;
 }
 
 void ConvertOutput2Duty::thrusts2duties_converter()
 {
     for (int i = 0; i < translate_matrix_size_; i++)
     {
-        duties_[i] = thrusts_[i] / max_thrust_;
-        if (duties_[i] > 100)
-        {
-            duties_[i] = 100;
-        }
+        duties_[i] = thrusts_[i] / (max_thrust_ * motor_num_);
+        if (duties_[i] > 1.0)
+            duties_[i] = 1.0;
+        else if (duties_[i] < 0)
+            duties_[i] = 0;
     }
 }

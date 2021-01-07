@@ -29,6 +29,7 @@ public:
     int frequency_ = 0;
     int pwm_range_ = 0;
     double max_thrust_ = 0.0;
+    int motor_num_ = 4;
 
     ConvertOutput2Duty();
 
