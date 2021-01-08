@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-PidController::PidController()
+PidController::PidController(std::string filename)
 {
-    std::string file_name_descrete_pid = "../conf/descrete_pid_parameters.conf";
+    std::string file_name_descrete_pid = filename;
 
     std::list<double> descrete_pid_parameters;
 
@@ -17,8 +17,8 @@ PidController::PidController()
     for (int i = 0; i < 3; i++)
     {
         K_c_[i] = *itr_descrete_pid_parameters;
-        T_i_transform_[i] = *(++itr_descrete_pid_parameters);
-        T_d_transform_[i] = *(++itr_descrete_pid_parameters);
+        T_i_transform_[i] = K_c_[i] / *(++itr_descrete_pid_parameters);
+        T_d_transform_[i] = K_c_[i] * *(++itr_descrete_pid_parameters);
     }
 }
 
@@ -43,9 +43,12 @@ void PidController::DescretePidController(std::vector<double> target, std::vecto
 
         e_[i] = target[i] - value[i];
 
-        P = K_c_[i] * (e_[i] - e_pre_[i]);
-        I = T_i_transform_[i] * T_s_sec * e_[i];
-        D = (e_[i] - 2.0 * e_pre_[i] + e_pre_2_[i]) * T_d_transform_[i] / T_s_sec;
+        if (K_c_[i] > 0.0)
+            P = K_c_[i] * (e_[i] - e_pre_[i]);
+        if (T_i_transform_[i] > 0.0)
+            I = T_i_transform_[i] * T_s_sec * e_[i];
+        if (T_d_transform_[i] > 0.0)
+            D = (e_[i] - 2.0 * e_pre_[i] + e_pre_2_[i]) * T_d_transform_[i] / T_s_sec;
 
         if (!std::isfinite(D))
             D = 0.0;
