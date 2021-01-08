@@ -55,12 +55,22 @@ MPU9250::MPU9250()
 
     this->SetDlpfBandwidth(GYRO_BANDWIDTH_184HZ, ACCEL_BANDWIDTH_184HZ, 0);
 
-    this->GetVelocitoesandAccelerations();
-    this->GetGeomagnetisms();
+    std::chrono::system_clock::time_point start, end;
+    double dt_usec = 0.0;
 
-    this->GetEulerRadAngles();
+    for(int i=0; i < 1000; i++){
+        start = std::chrono::system_clock::now();
+
+        this->GetVelocitoesandAccelerations();
+        this->GetGeomagnetisms();
+        this->GetEulerRadAngles(dt_usec);
+        this->GetEulerDegAngles(dt_usec);
+
+        end = std::chrono::system_clock::now();
+        dt_usec = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
+    }
+
     angles_rad_offsets_ = raw_rad_angles_;
-    this->GetEulerDegAngles();
     angles_deg_offsets_ = raw_deg_angles_;
     std::cout << "Angle Deg Offsets: "
               << angles_deg_offsets_[0]
@@ -478,12 +488,14 @@ void MPU9250::GetGeomagnetisms()
     }
 }
 
-void MPU9250::GetEulerRadAngles()
+void MPU9250::GetEulerRadAngles(double T_s_usec)
 {
+    double T_s_sec = T_s_usec / 1000.0 / 1000.0;
+
     double sin_phi, cos_phi;
     double sin_theta, cos_theta;
 
-    double temp1, temp2;
+    double temp1 = 0.0, temp2 = 0.0;
 
     raw_rad_angles_[0] = atan2(raw_accel_values_[1], raw_accel_values_[2]);
 
@@ -499,32 +511,37 @@ void MPU9250::GetEulerRadAngles()
 
     for (int i = 0; i < 3; i++)
     {
+        raw_rad_angles_[i] = 0.95 * (raw_rad_angles_[i] + raw_gyro_values_[i] * T_s_sec) + 0.05 * raw_rad_angles_[i];
         raw_rad_angles_[i] = raw_rad_angles_[i] - angles_rad_offsets_[i];
     }
 }
 
-void MPU9250::GetEulerDegAngles()
+void MPU9250::GetEulerDegAngles(double T_s_usec)
 {
+    double T_s_sec = T_s_usec / 1000.0 / 1000.0;
+
     double sin_phi, cos_phi;
     double sin_theta, cos_theta;
 
-    double temp1, temp2;
+    double temp1 = 0.0, temp2 = 0.0;
 
-    angles_deg_offsets_[0] = atan2(raw_accel_values_[1], raw_accel_values_[2]);
+    raw_rad_angles_[0] = atan2(raw_accel_values_[1], raw_accel_values_[2]);
 
-    sin_phi = sin(angles_deg_offsets_[0]);
-    cos_phi = cos(angles_deg_offsets_[0]);
-    angles_deg_offsets_[1] = atan(-raw_accel_values_[0] / (raw_accel_values_[1] * sin_phi + raw_accel_values_[2] * cos_phi));
+    sin_phi = sin(raw_rad_angles_[0]);
+    cos_phi = cos(raw_rad_angles_[0]);
+    raw_rad_angles_[1] = atan(-raw_accel_values_[0] / (raw_accel_values_[1] * sin_phi + raw_accel_values_[2] * cos_phi));
 
-    sin_theta = sin(angles_deg_offsets_[1]);
-    cos_theta = cos(angles_deg_offsets_[1]);
+    sin_theta = sin(raw_rad_angles_[1]);
+    cos_theta = cos(raw_rad_angles_[1]);
     temp1 = -raw_mag_values_[1] * cos_phi + raw_mag_values_[2] * sin_phi;
     temp2 = raw_mag_values_[0] * cos_theta + raw_mag_values_[1] * sin_phi * sin_theta + raw_mag_values_[2] * cos_phi * sin_theta;
-    angles_deg_offsets_[2] = atan2(temp1, temp2);
+    raw_rad_angles_[2] = atan2(temp1, temp2);
 
     for (int i = 0; i < 3; i++)
     {
-        angles_deg_offsets_[i] = (angles_deg_offsets_[i] - angles_rad_offsets_[i]) * RAD2DEG;
+        raw_rad_angles_[i] = 0.95 * (raw_rad_angles_[i] + raw_gyro_values_[i] * T_s_sec) + 0.05 * raw_rad_angles_[i];
+        raw_deg_angles_[i] = raw_rad_angles_[i] * RAD2DEG;
+        raw_deg_angles_[i] = (raw_rad_angles_[i] - angles_rad_offsets_[i]) * RAD2DEG;
     }
 }
 

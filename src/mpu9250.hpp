@@ -371,10 +371,10 @@ public:
     void GetGeomagnetisms();
 
     //  Get Euler Angles
-    void GetEulerRadAngles();
+    void GetEulerRadAngles(double);
 
     //  Get Euler Angles
-    void GetEulerDegAngles();
+    void GetEulerDegAngles(double);
 
     void CalibrateMagnimeter(double lr, double stop, int step); //  Learning Rate
 };
