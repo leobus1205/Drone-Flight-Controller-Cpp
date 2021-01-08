@@ -22,7 +22,7 @@ public:
     std::vector<double> e_ = std::vector<double>(3, initializer);
     std::vector<double> u_ = std::vector<double>(3, initializer);
 
-    PidController();
+    PidController(std::string);
 
     void DescretePidController(std::vector<double>, std::vector<double>, double);
 };
