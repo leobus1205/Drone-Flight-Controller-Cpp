@@ -7,7 +7,7 @@
 
 int main()
 {
-    PidController Controller;
+    PidController Controller("../conf/outer_descrete_pid_parameters.conf");
 
     std::cout
         << Controller.K_c_[0] << ","

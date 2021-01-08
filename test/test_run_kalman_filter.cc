@@ -33,7 +33,7 @@ int main()
         start = std::chrono::system_clock::now();
         NineAxisSensor.GetVelocitoesandAccelerations();
         NineAxisSensor.GetGeomagnetisms();
-        NineAxisSensor.GetEulerRadAngles();
+        NineAxisSensor.GetEulerRadAngles(0.0);
         std::cout
             << "RawDegAngle:\t\t"
             << NineAxisSensor.raw_rad_angles_[0] * NineAxisSensor.RAD2DEG

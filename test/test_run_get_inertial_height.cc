@@ -25,7 +25,7 @@ int main()
 
         NineAxisSensor.GetVelocitoesandAccelerations();
         NineAxisSensor.GetGeomagnetisms();
-        NineAxisSensor.GetEulerRadAngles();
+        NineAxisSensor.GetEulerRadAngles(dt_usec);
 
         GetHeight.get_inertial_height(
             NineAxisSensor.raw_accel_values_,

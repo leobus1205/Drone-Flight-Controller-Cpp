@@ -36,7 +36,7 @@ int main(int argc, char **argv)
                   << "Loop:" << std::dec << i
                   << std::string(20, ' ');
         NineAxisSensor.GetGeomagnetisms();
-        NineAxisSensor.GetEulerRadAngles();
+        NineAxisSensor.GetEulerRadAngles(0.0);
 
         writing_file_before
             << NineAxisSensor.raw_mag_values_[0] << ","
@@ -67,7 +67,7 @@ int main(int argc, char **argv)
                   << "Loop:" << std::dec << i
                   << std::string(20, ' ');
         NineAxisSensor.GetGeomagnetisms();
-        NineAxisSensor.GetEulerRadAngles();
+        NineAxisSensor.GetEulerRadAngles(0.0);
 
         writing_file_after
             << NineAxisSensor.raw_mag_values_[0] << ","

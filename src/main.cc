@@ -9,22 +9,22 @@
 #include <string>
 #include <thread>
 
-void double_vector_printer(std::string vector_name,std::vector<double> &double_vector)
+void double_vector_printer(std::string vector_name, std::vector<double> &double_vector)
 {
     std::cout << vector_name << "\t: ";
     for (int i = 0; i < double_vector.size(); i++)
     {
-        std::cout << double_vector[i] << " ";
+        std::cout << std::dec << double_vector[i] << " ";
     }
     std::cout << std::endl;
 }
 
-void int_vector_printer(std::string vector_name,std::vector<int> &double_vector)
+void int_vector_printer(std::string vector_name, std::vector<int> &double_vector)
 {
     std::cout << vector_name << "\t: ";
     for (int i = 0; i < double_vector.size(); i++)
     {
-        std::cout << double_vector[i] << " ";
+        std::cout << std::dec << double_vector[i] << " ";
     }
     std::cout << std::endl;
 }
@@ -77,7 +77,7 @@ int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> 
 int main(int argc, char *argv[])
 {
     ConvertOutput2Duty Converter;
-    PidController OuterController, InnerController;
+    PidController OuterController("../conf/outer_descrete_pid_parameters.conf"), InnerController("../conf/inner_descrete_pid_parameters.conf");
     KalmanFilter Fillter;
     MPU9250 AttitudeSensor;
 
@@ -117,34 +117,35 @@ int main(int argc, char *argv[])
             break;
 
         AttitudeSensor.GetVelocitoesandAccelerations();
-        AttitudeSensor.GetEulerRadAngles();
+        AttitudeSensor.GetEulerRadAngles(dt_usec);
+        double_vector_printer("RawAngles", AttitudeSensor.raw_rad_angles_);
 
         Fillter.Filtering(AttitudeSensor.raw_rad_angles_, AttitudeSensor.raw_gyro_values_, dt_usec);
-        double_vector_printer("FilteredAngles", AttitudeSensor.raw_rad_angles_);
+        //double_vector_printer("FilteredAngles", AttitudeSensor.raw_rad_angles_);
 
         for (int i = 0; i < AttitudeSensor.raw_gyro_values_.size(); i++)
             AttitudeSensor.raw_gyro_values_[i] = AttitudeSensor.raw_gyro_values_[i] - Fillter.matrixes_state_estimate_.at(i).at(1);
-        double_vector_printer("FilteredGyro", AttitudeSensor.raw_gyro_values_);
+        //double_vector_printer("FilteredGyro", AttitudeSensor.raw_gyro_values_);
 
         // set target angle
 
         OuterController.DescretePidController(target_angles, AttitudeSensor.angles_rad_offsets_, dt_usec);
-        double_vector_printer("OuterOutput", OuterController.u_);
+        //double_vector_printer("OuterOutput", OuterController.u_);
 
         InnerController.DescretePidController(OuterController.u_, AttitudeSensor.raw_gyro_values_, dt_usec);
         for (int i = 0; i < outputs.size() - 1; i++)
             outputs[i] = InnerController.u_[i];
         outputs[3] = 0.8;
-        double_vector_printer("TotalOutput", outputs);
+        //double_vector_printer("TotalOutput", outputs);
 
         Converter.outputs2thrusts_converter(outputs);
-        double_vector_printer("Thrust", Converter.thrusts_);
+        //double_vector_printer("Thrust", Converter.thrusts_);
         Converter.thrusts2duties_converter();
-        double_vector_printer("Duties", Converter.duties_);
+        //double_vector_printer("Duties", Converter.duties_);
 
         for (int i = 0; i < motor_pwm_pulses.size(); i++)
             motor_pwm_pulses[i] = (int)(Motors.max_pulse_width_ * Converter.duties_[i]);
-        int_vector_printer("Pulses:", motor_pwm_pulses);
+        //int_vector_printer("Pulses:", motor_pwm_pulses);
 
         //Motors.ChangePwmDuty(motor_pwm_pulses);
 

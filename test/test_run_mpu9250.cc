@@ -19,7 +19,7 @@ int main()
     {
         NineAxisSensor.GetVelocitoesandAccelerations();
         NineAxisSensor.GetGeomagnetisms();
-        NineAxisSensor.GetEulerRadAngles();
+        NineAxisSensor.GetEulerRadAngles(0.0);
 
         std::cout
             << i
@@ -50,7 +50,7 @@ int main()
             << std::endl;
 
         NineAxisSensor.GetVelocitoesandAccelerations();
-        NineAxisSensor.GetEulerDegAngles();
+        NineAxisSensor.GetEulerDegAngles(0.0);
         std::cout
             << "DegAngle:\t"
             << NineAxisSensor.raw_deg_angles_[0]
