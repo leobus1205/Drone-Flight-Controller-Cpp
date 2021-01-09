@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
     }
 
     //Motors Motors(std::stoi(argv[1]));
-    Motors Motors(true);
+    Motors Motors(false);
 
     bool flag_loopbreak = false;
     std::thread thread_key_input(control_key_input, std::ref(flag_loopbreak), std::ref(Motors), std::ref(target_angles));
@@ -117,35 +117,41 @@ int main(int argc, char *argv[])
             break;
 
         AttitudeSensor.GetVelocitoesandAccelerations();
-        AttitudeSensor.GetEulerRadAngles(dt_usec);
-        double_vector_printer("RawAngles", AttitudeSensor.raw_rad_angles_);
+        //double_vector_printer("RawGyros", AttitudeSensor.raw_gyro_values_);
+        //double_vector_printer("RawAccels", AttitudeSensor.raw_accel_values_);
+
+        AttitudeSensor.GetEulerRadAngles(dt_usec);  // y軸回りの９０度以上の角度の変化によって、x軸回りの角度が変化してしまうので、８０以下で運用
+        //double_vector_printer("RawRadAngles", AttitudeSensor.raw_rad_angles_);
+
+        //AttitudeSensor.GetEulerDegAngles(dt_usec);
+        //double_vector_printer("RawDegAngles", AttitudeSensor.raw_deg_angles_);
 
         Fillter.Filtering(AttitudeSensor.raw_rad_angles_, AttitudeSensor.raw_gyro_values_, dt_usec);
         //double_vector_printer("FilteredAngles", AttitudeSensor.raw_rad_angles_);
 
         for (int i = 0; i < AttitudeSensor.raw_gyro_values_.size(); i++)
             AttitudeSensor.raw_gyro_values_[i] = AttitudeSensor.raw_gyro_values_[i] - Fillter.matrixes_state_estimate_.at(i).at(1);
-        //double_vector_printer("FilteredGyro", AttitudeSensor.raw_gyro_values_);
+        //double_vector_printer("FilteredGyros", AttitudeSensor.raw_gyro_values_);
 
         // set target angle
 
         OuterController.DescretePidController(target_angles, AttitudeSensor.angles_rad_offsets_, dt_usec);
-        //double_vector_printer("OuterOutput", OuterController.u_);
+        //double_vector_printer("OuterOutputs", OuterController.u_);
 
         InnerController.DescretePidController(OuterController.u_, AttitudeSensor.raw_gyro_values_, dt_usec);
         for (int i = 0; i < outputs.size() - 1; i++)
             outputs[i] = InnerController.u_[i];
         outputs[3] = 0.8;
-        //double_vector_printer("TotalOutput", outputs);
+        //double_vector_printer("TotalOutputs", outputs);
 
         Converter.outputs2thrusts_converter(outputs);
-        //double_vector_printer("Thrust", Converter.thrusts_);
+        //double_vector_printer("Thrusts", Converter.thrusts_);
         Converter.thrusts2duties_converter();
         //double_vector_printer("Duties", Converter.duties_);
 
         for (int i = 0; i < motor_pwm_pulses.size(); i++)
             motor_pwm_pulses[i] = (int)(Motors.max_pulse_width_ * Converter.duties_[i]);
-        //int_vector_printer("Pulses:", motor_pwm_pulses);
+        //int_vector_printer("Pulses", motor_pwm_pulses);
 
         //Motors.ChangePwmDuty(motor_pwm_pulses);
 

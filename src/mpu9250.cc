@@ -511,8 +511,8 @@ void MPU9250::GetEulerRadAngles(double T_s_usec)
 
     for (int i = 0; i < 3; i++)
     {
-        raw_rad_angles_[i] = 0.95 * (raw_rad_angles_[i] + raw_gyro_values_[i] * T_s_sec) + 0.05 * raw_rad_angles_[i];
-        raw_rad_angles_[i] = raw_rad_angles_[i] - angles_rad_offsets_[i];
+        //raw_rad_angles_[i] = 0.95 * (raw_rad_angles_[i] + raw_gyro_values_[i] * T_s_sec) + 0.05 * raw_rad_angles_[i];
+        //raw_rad_angles_[i] = raw_rad_angles_[i] - angles_rad_offsets_[i];
     }
 }
 
@@ -541,7 +541,7 @@ void MPU9250::GetEulerDegAngles(double T_s_usec)
     {
         raw_rad_angles_[i] = 0.95 * (raw_rad_angles_[i] + raw_gyro_values_[i] * T_s_sec) + 0.05 * raw_rad_angles_[i];
         raw_deg_angles_[i] = raw_rad_angles_[i] * RAD2DEG;
-        raw_deg_angles_[i] = (raw_rad_angles_[i] - angles_rad_offsets_[i]) * RAD2DEG;
+        //raw_deg_angles_[i] = (raw_rad_angles_[i] - angles_rad_offsets_[i]) * RAD2DEG;
     }
 }
 
