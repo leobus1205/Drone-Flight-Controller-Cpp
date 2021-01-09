@@ -45,11 +45,23 @@ void PidController::DescretePidController(std::vector<double> target, std::vecto
 
         if (K_c_[i] > 0.0)
             P = K_c_[i] * (e_[i] - e_pre_[i]);
+        else
+            P = 0.0;
+        
         if (T_i_transform_[i] > 0.0)
             I = T_i_transform_[i] * T_s_sec * e_[i];
+        else
+            I = 0.0;
+        
         if (T_d_transform_[i] > 0.0)
             D = (e_[i] - 2.0 * e_pre_[i] + e_pre_2_[i]) * T_d_transform_[i] / T_s_sec;
+        else
+            D = 0.0;
 
+        if (!std::isfinite(P))
+            P = 0.0;
+        if (!std::isfinite(I))
+            I = 0.0;
         if (!std::isfinite(D))
             D = 0.0;
 
