@@ -135,14 +135,16 @@ int main(int argc, char *argv[])
 
         // set target angle
 
-        OuterController.DescretePidController(target_angles, AttitudeSensor.angles_rad_offsets_, dt_usec);
+        OuterController.DescretePidController(target_angles, AttitudeSensor.raw_rad_angles_, dt_usec);
         //double_vector_printer("OuterOutputs", OuterController.u_);
+        //double_vector_printer("OuterErrors", OuterController.e_);
 
         InnerController.DescretePidController(OuterController.u_, AttitudeSensor.raw_gyro_values_, dt_usec);
         for (int i = 0; i < outputs.size() - 1; i++)
             outputs[i] = InnerController.u_[i];
-        outputs[3] = 0.8;
+        outputs[3] = 0.8*9.81;
         //double_vector_printer("TotalOutputs", outputs);
+        //double_vector_printer("InnerErrors", InnerController.e_);
 
         Converter.outputs2thrusts_converter(outputs);
         //double_vector_printer("Thrusts", Converter.thrusts_);
@@ -150,8 +152,8 @@ int main(int argc, char *argv[])
         //double_vector_printer("Duties", Converter.duties_);
 
         for (int i = 0; i < motor_pwm_pulses.size(); i++)
-            motor_pwm_pulses[i] = (int)(Motors.max_pulse_width_ * Converter.duties_[i]);
-        //int_vector_printer("Pulses", motor_pwm_pulses);
+            motor_pwm_pulses[i] = (int)((Motors.max_pulse_width_ - Motors.min_pulse_width_) * Converter.duties_[i]) + Motors.min_pulse_width_;
+        int_vector_printer("Pulses", motor_pwm_pulses);
 
         //Motors.ChangePwmDuty(motor_pwm_pulses);
 
