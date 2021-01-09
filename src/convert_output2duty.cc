@@ -42,7 +42,8 @@ ConvertOutput2Duty::ConvertOutput2Duty()
 
     ++itr_param_esc;
     ++itr_param_esc;
-    max_thrust_ = *(++itr_param_esc) * (max_pulse_width_ / pwm_range_);
+    double kgtonewton = 9.806;
+    max_thrust_ = *(++itr_param_esc) * kgtonewton;
     motor_num_ = *(++itr_param_esc);
 }
 
@@ -72,7 +73,7 @@ void ConvertOutput2Duty::thrusts2duties_converter()
 {
     for (int i = 0; i < translate_matrix_size_; i++)
     {
-        duties_[i] = thrusts_[i] / (max_thrust_ * motor_num_);
+        duties_[i] = thrusts_[i] / max_thrust_;
         if (duties_[i] > 1.0)
             duties_[i] = 1.0;
         else if (duties_[i] < 0)
