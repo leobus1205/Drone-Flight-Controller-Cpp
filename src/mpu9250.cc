@@ -58,7 +58,8 @@ MPU9250::MPU9250()
     std::chrono::system_clock::time_point start, end;
     double dt_usec = 0.0;
 
-    for(int i=0; i < 1000; i++){
+    for (int i = 0; i < 1000; i++)
+    {
         start = std::chrono::system_clock::now();
 
         this->GetVelocitoesandAccelerations();
@@ -73,8 +74,11 @@ MPU9250::MPU9250()
     angles_rad_offsets_ = raw_rad_angles_;
     angles_deg_offsets_ = raw_deg_angles_;
     std::cout << "Angle Deg Offsets: "
+              << " "
               << angles_deg_offsets_[0]
+              << " "
               << angles_deg_offsets_[1]
+              << " "
               << angles_deg_offsets_[2]
               << std::endl;
 }
