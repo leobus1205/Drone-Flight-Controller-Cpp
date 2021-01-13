@@ -35,8 +35,8 @@ ConvertOutput2Duty::ConvertOutput2Duty()
     }
 
     auto itr_param_esc = parameters_esc.begin();
-    max_pulse_width_ = *itr_param_esc;
-    min_pulse_width_ = *(++itr_param_esc);
+    max_pulse_ = *itr_param_esc;
+    min_pulse_ = *(++itr_param_esc);
     frequency_ = *(++itr_param_esc);
     pwm_range_ = *(++itr_param_esc);
 
@@ -52,9 +52,7 @@ double ConvertOutput2Duty::vector_culculator(std::vector<double> &horizontal_vec
     double result = 0.0;
 
     for (int i = 0; i < translate_matrix_size_; i++)
-    {
         result += horizontal_vector[i] * vertical_vector[i];
-    }
 
     return result;
 }
@@ -62,21 +60,18 @@ double ConvertOutput2Duty::vector_culculator(std::vector<double> &horizontal_vec
 void ConvertOutput2Duty::outputs2thrusts_converter(std::vector<double> &outputs)
 {
     for (int i = 0; i < translate_matrix_size_; i++)
-    {
         thrusts_[i] = vector_culculator(translate_matrix_.at(i), outputs);
-        //std::cout << thrusts_[i] << " ";
-    }
-    //std::cout << std::endl;
 }
 
-void ConvertOutput2Duty::thrusts2duties_converter()
+void ConvertOutput2Duty::thrusts2oneshot125pulses_converter()
 {
     for (int i = 0; i < translate_matrix_size_; i++)
     {
-        duties_[i] = thrusts_[i] / max_thrust_;
-        if (duties_[i] > 1.0)
-            duties_[i] = 1.0;
-        else if (duties_[i] < 0)
-            duties_[i] = 0;
+        pulses_[i] = thrusts_[i] * ((max_pulse_ - min_pulse_) / max_thrust_) + min_pulse_;
+
+        if (pulses_[i] > max_pulse_)
+            pulses_[i] = max_pulse_;
+        else if (pulses_[i] < min_pulse_)
+            pulses_[i] = min_pulse_;
     }
 }

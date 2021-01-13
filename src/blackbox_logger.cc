@@ -32,10 +32,10 @@ BlackboxLogger::BlackboxLogger(
             << i
             << ",";
     }
-    for (int i = 0; i < Converter_.duties_.size(); i++)
+    for (int i = 0; i < Converter_.pulses_.size(); i++)
     {
         writing_file_
-            << "DUTY_"
+            << "PULSES_"
             << i
             << ",";
     }
@@ -121,10 +121,10 @@ void BlackboxLogger::Logging()
         << Converter_.thrusts_[i]
         << ",";
     }
-    for (int i = 0; i < Converter_.duties_.size(); i++)
+    for (int i = 0; i < Converter_.pulses_.size(); i++)
     {
         writing_file_
-        << Converter_.duties_[i]
+        << Converter_.pulses_[i]
         << ",";
     }
 

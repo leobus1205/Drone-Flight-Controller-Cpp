@@ -22,10 +22,10 @@ public:
     double translate_force2angular_ = 0.0;
 
     std::vector<double> thrusts_ = std::vector<double>(translate_matrix_size_, 0.0);
-    std::vector<double> duties_ = std::vector<double>(translate_matrix_size_, 0.0);
+    std::vector<double> pulses_ = std::vector<double>(translate_matrix_size_, 0);
 
-    int max_pulse_width_ = 0;
-    int min_pulse_width_ = 0;
+    int max_pulse_ = 0;
+    int min_pulse_ = 0;
     int frequency_ = 0;
     int pwm_range_ = 0;
     double max_thrust_ = 0.0;
@@ -41,7 +41,7 @@ public:
 
     // void angularvelocities2duties_converter(std::vector<double> &, std::vector<double> &);
 
-    void thrusts2duties_converter();
+    void thrusts2oneshot125pulses_converter();
 };
 
 #endif // FLIGHTCONTROLLER_SRC_CONVERTOUTPUT2DUTY_HPP_
