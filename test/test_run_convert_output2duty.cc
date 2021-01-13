@@ -12,8 +12,8 @@ int main()
     std::cout
         << "Show Parameters.\n"
         << Converter.translate_force2angular_ << "\n"
-        << Converter.max_pulse_width_ << "\n"
-        << Converter.min_pulse_width_ << "\n"
+        << Converter.max_pulse_ << "\n"
+        << Converter.min_pulse_ << "\n"
         << Converter.frequency_ << "\n"
         << Converter.pwm_range_ << "\n"
         << Converter.max_thrust_ << "\n"
@@ -39,13 +39,13 @@ int main()
         << Converter.thrusts_[3]
         << std::endl;
 
-    Converter.thrusts2duties_converter();
+    Converter.thrusts2oneshot125pulses_converter();
     std::cout
         << "Thrusts to duties convertion test. Answer = {}\n"
-        << Converter.duties_[0] << " "
-        << Converter.duties_[1] << " "
-        << Converter.duties_[2] << " "
-        << Converter.duties_[3]
+        << Converter.pulses_[0] << " "
+        << Converter.pulses_[1] << " "
+        << Converter.pulses_[2] << " "
+        << Converter.pulses_[3]
         << std::endl;
 
     return 0;
