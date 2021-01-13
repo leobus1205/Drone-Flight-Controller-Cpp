@@ -43,7 +43,7 @@ int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> 
         switch (command_input)
         {
         case 'q':
-            std::cout << "Quite." << std::endl;
+            std::cout << "Quite.\n" << std::endl;
             flag_loopbreak = true;
             return -1;
 
@@ -63,7 +63,7 @@ int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> 
             break;
 
         default: // Press Empty Enterにしたい
-            std::cout << "Emergency Motors Disarming." << std::endl;
+            std::cout << "Emergency Motors Disarming.\n" << std::endl;
             Motors.DisArming();
             flag_loopbreak = true;
             return -1;
@@ -91,22 +91,27 @@ int main(int argc, char *argv[])
     bool flag_calibratemag = 1;
     if (flag_calibratemag != true)
     {
-        std::cout << "Calibrate Magnimeter." << std::endl;
+        std::cout << "Calibrate Magnimeter.\n" << std::endl;
         AttitudeSensor.CalibrateMagnimeter(0.001, 1000, 1000);
     }
 
     //Motors Motors(std::stoi(argv[1]));
-    Motors Motors(false);
+    //Motors Motors(false);
+    Motors Motors(true);
+
+    Motors.Arming();
+    std::string s;
+    std::cout << "Start by press any key" << std::endl;
+    std::cin >> s;
 
     bool flag_loopbreak = false;
     std::thread thread_key_input(control_key_input, std::ref(flag_loopbreak), std::ref(Motors), std::ref(target_angles));
-
-    Motors.Arming();
 
     std::chrono::system_clock::time_point start, end;
     double dt_usec = 0.0;
 
     BlackboxLogger Logger(dt_usec, Converter, OuterController, InnerController, Fillter, AttitudeSensor);
+    std::cout << "\nStart control loop.\n" << std::endl;
 
     // Control proccess
     while (1)
@@ -148,14 +153,10 @@ int main(int argc, char *argv[])
 
         Converter.outputs2thrusts_converter(outputs);
         //double_vector_printer("Thrusts", Converter.thrusts_);
-        Converter.thrusts2duties_converter();
-        //double_vector_printer("Duties", Converter.duties_);
+        Converter.thrusts2oneshot125pulses_converter();
+        double_vector_printer("Duties", Converter.pulses_);
 
-        for (int i = 0; i < motor_pwm_pulses.size(); i++)
-            motor_pwm_pulses[i] = (int)((Motors.max_pulse_width_ - Motors.min_pulse_width_) * Converter.duties_[i]) + Motors.min_pulse_width_;
-        int_vector_printer("Pulses", motor_pwm_pulses);
-
-        //Motors.ChangePwmDuty(motor_pwm_pulses);
+        Motors.ChangePwmDuty(Converter.pulses_);
 
         Logger.Logging();
 
