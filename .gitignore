@@ -246,8 +246,8 @@ dmypy.json
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,vscode,c++,cmake,python
 
-data/*.csv
-data/*.png
-data/*.gif
-cmake
-tmp
+/data/*.csv
+/data/*.png
+/data/*.gif
+/cmake
+/tmp
