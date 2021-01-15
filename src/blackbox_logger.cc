@@ -76,6 +76,7 @@ BlackboxLogger::BlackboxLogger(double &t_usec, MPU9250 &AttitudeSensor, std::vec
     {
         writing_file_
             << "TARGET_ANGLE_"
+            << i
             << ",";
     }
     writing_file_
