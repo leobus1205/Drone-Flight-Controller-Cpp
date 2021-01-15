@@ -94,13 +94,17 @@ BlackboxLogger::BlackboxLogger(
             << i
             << ",";
     }
-    for (int i = 0; i < InnerController_.u_.size(); i++)
+    for (int i = 0; i < InnerController_.u_.size() - 1; i++)
     {
         writing_file_
             << "INNER_U_"
             << i
-            << std::endl;
+            << ",";
     }
+    writing_file_
+            << "INNER_U_"
+            << 2
+            << std::endl;
 }
 
 BlackboxLogger::~BlackboxLogger()
@@ -175,10 +179,13 @@ void BlackboxLogger::Logging()
             << InnerController_.e_[i]
             << ",";
     }
-    for (int i = 0; i < InnerController_.u_.size(); i++)
+    for (int i = 0; i < InnerController_.u_.size()-1; i++)
     {
         writing_file_
             << InnerController_.u_[i]
-            << std::endl;
+            << ",";
     }
+    writing_file_
+            << InnerController_.u_[2]
+            << std::endl;
 }
