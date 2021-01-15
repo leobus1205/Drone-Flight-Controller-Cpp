@@ -14,9 +14,10 @@ PidController::PidController(std::string filename)
     }
 
     auto itr_descrete_pid_parameters = descrete_pid_parameters.begin();
-    for (int i = 0; i < 3; i++)
+    *(--itr_descrete_pid_parameters);
+    for (int i = 0; i < K_c_.size(); i++)
     {
-        K_c_[i] = *itr_descrete_pid_parameters;
+        K_c_[i] = *(++itr_descrete_pid_parameters);
         T_i_transform_[i] = K_c_[i] / *(++itr_descrete_pid_parameters);
         T_d_transform_[i] = K_c_[i] * *(++itr_descrete_pid_parameters);
     }
@@ -33,9 +34,7 @@ void PidController::DescretePidController(std::vector<double> target, std::vecto
     double I = 0.0;
     double D = 0.0;
 
-    //std::cout << T_s_sec << std::endl;
-
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < u_.size(); i++)
     {
         P = 0.0;
         I = 0.0;
