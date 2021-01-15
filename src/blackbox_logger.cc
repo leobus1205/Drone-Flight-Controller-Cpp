@@ -17,7 +17,7 @@ BlackboxLogger::BlackboxLogger(double &t_usec, MPU9250 &AttitudeSensor, std::vec
     writing_file_.open(filename, std::ios::trunc);
 
     writing_file_
-        << "LOOPTIME_USEC"
+        << "TIME"
         << ",";
 
     //  Converter
@@ -128,8 +128,9 @@ BlackboxLogger::~BlackboxLogger()
 
 void BlackboxLogger::Logging()
 {
+    time_ += t_usec_ / 1000.0 /1000.0;
     writing_file_
-        << t_usec_
+        << time_
         << ",";
 
     //     //  Converter

@@ -25,6 +25,8 @@ public:
     const MPU9250 &AttitudeSensor_;
     const std::vector<double> &target_angles_;
 
+    double time_ = 0.0;
+
     //BlackboxLogger(double &, ConvertOutput2Duty &, PidController &, PidController &, KalmanFilter &, MPU9250 &, std::vector<double> &);
     BlackboxLogger(double &, MPU9250 &, std::vector<double> &);
     ~BlackboxLogger();
