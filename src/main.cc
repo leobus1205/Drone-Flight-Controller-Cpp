@@ -141,15 +141,16 @@ int main(int argc, char *argv[])
         // set target angle
 
         OuterController.DescretePidController(target_angles, AttitudeSensor.raw_rad_angles_, dt_usec);
-        //double_vector_printer("OuterOutputs", OuterController.u_);
         //double_vector_printer("OuterErrors", OuterController.e_);
+        //double_vector_printer("OuterOutputs", OuterController.u_);
 
         InnerController.DescretePidController(OuterController.u_, AttitudeSensor.raw_gyro_values_, dt_usec);
         for (int i = 0; i < outputs.size() - 1; i++)
             outputs[i] = InnerController.u_[i];
-        outputs[3] = 0.8*9.81;
-        //double_vector_printer("TotalOutputs", outputs);
+        outputs[3] = 1.2*9.81;
         //double_vector_printer("InnerErrors", InnerController.e_);
+        //double_vector_printer("TotalOutputs", outputs);
+        
 
         Converter.outputs2thrusts_converter(outputs);
         //double_vector_printer("Thrusts", Converter.thrusts_);
