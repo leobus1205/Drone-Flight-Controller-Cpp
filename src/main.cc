@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
     std::chrono::system_clock::time_point start, end;
     double dt_usec = 0.0;
 
-    BlackboxLogger Logger(dt_usec, Converter, OuterController, InnerController, Fillter, AttitudeSensor);
+    BlackboxLogger Logger(dt_usec, AttitudeSensor, target_angles);
     std::cout << "\nStart control loop.\n" << std::endl;
 
     // Control proccess
