@@ -124,6 +124,8 @@ int main(int argc, char *argv[])
         AttitudeSensor.GetVelocitoesandAccelerations();
         //double_vector_printer("RawGyros", AttitudeSensor.raw_gyro_values_);
         //double_vector_printer("RawAccels", AttitudeSensor.raw_accel_values_);
+        AttitudeSensor.GetGeomagnetisms();
+        //double_vector_printer("RawMags", AttitudeSensor.raw_mag_values_);
 
         AttitudeSensor.GetEulerRadAngles(dt_usec);  // y軸回りの９０度以上の角度の変化によって、x軸回りの角度が変化してしまうので、８０以下で運用
         //double_vector_printer("RawRadAngles", AttitudeSensor.raw_rad_angles_);
