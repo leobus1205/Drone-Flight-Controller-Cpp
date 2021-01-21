@@ -67,6 +67,7 @@ target_link_libraries(
 add_executable(
     FlightController.out
     ${PROJECT_SOURCE_DIR}/src/main.cc
+    ${PROJECT_SOURCE_DIR}/src/recieve_bt_input.cpp
 )
 target_link_libraries(
     FlightController.out
@@ -81,7 +82,7 @@ target_link_libraries(
     BlackboxLogger
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++17 -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++17 -pthread -lbluetooth")
 
 # ライブラリファイル名の指定
 target_link_libraries(MotorControl pigpio)

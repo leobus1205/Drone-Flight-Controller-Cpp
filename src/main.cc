@@ -5,6 +5,8 @@
 #include "motor_control.hpp"
 #include "mpu9250.hpp"
 
+#include "recieve_bt_input.hpp"
+
 #include <iostream>
 #include <string>
 #include <thread>
@@ -27,50 +29,6 @@ void int_vector_printer(std::string vector_name, std::vector<int> &double_vector
         std::cout << std::dec << double_vector[i] << " ";
     }
     std::cout << std::endl;
-}
-
-int control_key_input(bool &flag_loopbreak, Motors &Motors, std::vector<double> &target_angles)
-{
-    char command_input;
-    double value_input;
-
-    while (1)
-    {
-        std::cin >> command_input;
-        if (std::cin.fail())
-            continue;
-
-        switch (command_input)
-        {
-        case 'q':
-            std::cout << "Quite.\n" << std::endl;
-            flag_loopbreak = true;
-            return -1;
-
-        case 'x':
-            std::cin >> value_input;
-            target_angles[0] = value_input;
-            break;
-
-        case 'y':
-            std::cin >> value_input;
-            target_angles[1] = value_input;
-            break;
-
-        case 'z':
-            std::cin >> value_input;
-            target_angles[2] = value_input;
-            break;
-
-        default: // Press Empty Enterにしたい
-            std::cout << "Emergency Motors Disarming.\n" << std::endl;
-            Motors.DisArming();
-            flag_loopbreak = true;
-            return -1;
-        }
-    }
-
-    return 0;
 }
 
 //  argv = {esc_calibration flag, flag_calibratemag, target_y, target_z}
@@ -105,7 +63,8 @@ int main(int argc, char *argv[])
     std::cin >> s;
 
     bool flag_loopbreak = false;
-    std::thread thread_key_input(control_key_input, std::ref(flag_loopbreak), std::ref(Motors), std::ref(target_angles));
+    outputs[3] = 1.2*9.81;
+    std::thread thread_key_input(recieve_bt_input, std::ref(flag_loopbreak), std::ref(target_angles), std::ref(outputs));
 
     std::chrono::system_clock::time_point start, end;
     double dt_usec = 0.0;
@@ -147,7 +106,7 @@ int main(int argc, char *argv[])
         InnerController.DescretePidController(OuterController.u_, AttitudeSensor.raw_gyro_values_, dt_usec);
         for (int i = 0; i < outputs.size() - 1; i++)
             outputs[i] = InnerController.u_[i];
-        outputs[3] = 1.2*9.81;
+        // outputs[3] = 1.2*9.81;
         //double_vector_printer("InnerErrors", InnerController.e_);
         //double_vector_printer("TotalOutputs", outputs);
         
