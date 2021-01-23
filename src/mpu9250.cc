@@ -584,11 +584,17 @@ void MPU9250::CalibrateMagnimeter(double lr, double stop, int step)
                   << " Epsilon= " << f
                   << std::string(20, ' ');
 
+        if (f < 0)
+            break;
+        
+        if (!std::isfinite(f))
+            continue;
+
         this->GetGeomagnetisms();
         dx = raw_mag_values_[0] - b[0];
         dy = raw_mag_values_[1] - b[1];
         dz = raw_mag_values_[2] - b[2];
-        f = dx * dx + dy * dy + dz * dz - b[3] * b[3];
+        f = dx*dx + dy*dy + dz*dz - b[3] * b[3];
         b[0] = b[0] + 4.0 * lr * f * dx;
         b[1] = b[1] + 4.0 * lr * f * dy;
         b[2] = b[2] + 4.0 * lr * f * dz;

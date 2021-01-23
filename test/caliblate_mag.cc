@@ -41,7 +41,7 @@ int main(int argc, char **argv)
         writing_file_before
             << NineAxisSensor.raw_mag_values_[0] << ","
             << NineAxisSensor.raw_mag_values_[1] << ","
-            << NineAxisSensor.raw_mag_values_[2] << ","
+            << NineAxisSensor.raw_mag_values_[2]
             << std::endl;
     }
     std::cout << std::endl;
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
         writing_file_after
             << NineAxisSensor.raw_mag_values_[0] << ","
             << NineAxisSensor.raw_mag_values_[1] << ","
-            << NineAxisSensor.raw_mag_values_[2] << ","
+            << NineAxisSensor.raw_mag_values_[2]
             << std::endl;
     }
     std::cout << std::endl;
